@@ -5,14 +5,7 @@
  * Date : 08.05.2022
  */
 
-/*$dWednesday = '2016-05-11T12:22:11.824';
-$dThursday = '2016-05-12T12:22:11.824';
-$dSaturday = '2016-05-14T09:15:00.000';
-$dSunday = '2016-05-15T09:15:00.000';
-$dFriday_morning = '2016-05-13T08:00:00.000';
-$dMonday_morning = '2016-05-16T08:00:00.000';
-$dThursday_afternoon = '2016-05-12T14:00:00.000';*/
-
+//Array of all the different opening hours
 $openingHours = [
     0 => [
         "Mon", "08:00", "16:00"
@@ -38,7 +31,7 @@ $openingHours = [
 ];
 
 //$date = date('D H:i');
-$date = 'Tue 18:34';
+$date = 'Tue 07:34';    //Testing purpose for "If shop is closed"
 
 function IsOpenOn($date, $openingHours)
 {
@@ -56,8 +49,58 @@ function NextOpeningDate($date, $openingHours)
 {
     $dateStr = substr($date, 0, 3);
     $timeStr = substr($date, 4, 5);
-    if (!IsOpenOn($date, $openingHours)) {
-        echo "<h2>Next opening : </h2><br><br>";
+    foreach ($openingHours as $openingHour) {
+        switch ($dateStr) {
+            case "Mon":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Tue at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Tue":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[3];
+                } elseif (($dateStr == $openingHour[0]) && (($timeStr > $openingHour[2]) && ($timeStr < $openingHour[3]))) {
+                    $nextOpening = " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Wed at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Wed":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Thu at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Thu":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[3];
+                } elseif (($dateStr == $openingHour[0]) && (($timeStr > $openingHour[2]) && ($timeStr < $openingHour[3]))) {
+                    $nextOpening = " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Fri at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Fri":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Sat at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Sat":
+                if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
+                    $nextOpening = $openingHour[0] . " at " . $openingHour[1];
+                } else {
+                    $nextOpening = "Mon at " . $openingHour[1];
+                }
+                return $nextOpening;
+            case "Sun":
+                $nextOpening = "Mon at 08:00";
+                return $nextOpening;
+        }
     }
 }
 
@@ -65,6 +108,11 @@ function NextOpeningDate($date, $openingHours)
 <style>
     table, th, td {
         border: 1px solid black;
+        text-align: center;
+    }
+
+    th {
+        background-color: cadetblue;
     }
 </style>
 <div>
@@ -74,7 +122,7 @@ function NextOpeningDate($date, $openingHours)
         } else {
             echo "closed.";
         } ?></h2><br><br>
-    <?= NextOpeningDate($date, $openingHours) ?>
+    <h2>Next opening : <?= NextOpeningDate($date, $openingHours) ?></h2><br><br>
     <h3>Schedule : </h3>
     <table>
         <thead>
