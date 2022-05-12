@@ -5,8 +5,7 @@
  * Date : 08.05.2022
  */
 
-//Array of all the different opening hours
-$openingHours = [
+const OPENINGHOURS = [
     0 => [
         "Mon", "08:00", "16:00"
     ],
@@ -30,14 +29,16 @@ $openingHours = [
     ]
 ];
 
+//Array of all the different opening hours
+
 //$date = date('D H:i');
 $date = 'Tue 07:34';    //Testing purpose for "If shop is closed"
 
-function IsOpenOn($date, $openingHours)
+function IsOpenOn($date)
 {
     $dateStr = substr($date, 0, 3);
     $timeStr = substr($date, 4, 5);
-    foreach ($openingHours as $openingHour) {
+    foreach (OPENINGHOURS as $openingHour) {
         if (($dateStr == $openingHour[0]) && ((($timeStr >= $openingHour[1]) && ($timeStr <= $openingHour[2])) || (($timeStr >= $openingHour[3]) && ($timeStr <= $openingHour[4])))) {
             return true;
         }
@@ -45,11 +46,11 @@ function IsOpenOn($date, $openingHours)
     return false;
 }
 
-function NextOpeningDate($date, $openingHours)
+function NextOpeningDate($date)
 {
     $dateStr = substr($date, 0, 3);
     $timeStr = substr($date, 4, 5);
-    foreach ($openingHours as $openingHour) {
+    foreach (OPENINGHOURS as $openingHour) {
         switch ($dateStr) {
             case "Mon":
                 if (($dateStr == $openingHour[0]) && ($timeStr < $openingHour[1])) {
@@ -117,12 +118,12 @@ function NextOpeningDate($date, $openingHours)
 </style>
 <div>
     <h1>Opening Hours - CPNVShop</h1><br><br>
-    <h2>The shop is currently <?php if (IsOpenOn($date, $openingHours)) {
+    <h2>The shop is currently <?php if (IsOpenOn($date)) {
             echo "open !";
         } else {
             echo "closed.";
         } ?></h2><br><br>
-    <h2>Next opening : <?= NextOpeningDate($date, $openingHours) ?></h2><br><br>
+    <h2>Next opening : <?= NextOpeningDate($date) ?></h2><br><br>
     <h3>Schedule : </h3>
     <table>
         <thead>
@@ -132,7 +133,7 @@ function NextOpeningDate($date, $openingHours)
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($openingHours as $openingHour) { ?>
+        <?php foreach (OPENINGHOURS as $openingHour) { ?>
             <tr>
                 <td>
                     <?= $openingHour[0] ?>
